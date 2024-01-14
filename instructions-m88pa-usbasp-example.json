@@ -1,0 +1,8 @@
+{
+    "part": "m88pa",
+    "lfuse": "0xff",
+    "hfuse": "0xdd",
+    "efuse": "0xf9",
+    "lockbit": "0xff",
+    "file": "20161227_mega88_usbasp.hex"
+}

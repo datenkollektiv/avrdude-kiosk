@@ -1,0 +1,7 @@
+{
+    "part": "m168pa",
+    "lfuse": "0xe2",
+    "hfuse": "0xdf",
+    "efuse": "0xf9",
+    "file": "main.hex"
+}

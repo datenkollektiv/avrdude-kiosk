@@ -1,0 +1,12 @@
+# Ignore Python virtual environment
+bin/
+lib/
+pyvenv.cfg
+__pycache__/
+
+# Ignore local configuration
+config.py
+
+# Ignore flash and eeprom files
+*.hex
+*.eep

@@ -1,0 +1,8 @@
+{
+    "part": "m328p",
+    "lfuse": "0x62",
+    "hfuse": "0xd9",
+    "efuse": "0xff",
+    "lockbit": "0xff",
+    "file": "doubleLED_blink.ino.m328p.hex"
+}

@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A frontend to avrdude with usbavr">
+<meta name="author" content="fluffi">
+<title>AVR Burner | ATmega368P</title>
+
+<!-- CSS only -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+
+</head>
+<body>
+    <main>
+        <nav class="navbar navbar-expand bg-light">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <form action="/shutdown" method="post" onsubmit="return confirm('Do you really want to shutdown the device?');">
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-power"></i></button>
+                    </form>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a id="dropdownMenuButton" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ selected_mcu if selected_mcu else 'Select MCU' }}
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item {% if selected_mcu == 'ATmega368P' %}active{% endif %}" href="#">ATmega328P</a></li>
+                      <li><a class="dropdown-item"{% if selected_mcu == 'ATmega168PA' %}active{% endif %} href="#">ATmega168PA</a></li>
+                      <li><a class="dropdown-item"{% if selected_mcu == 'ATmega88PA' %}active{% endif %} href="#">ATmega88PA</a></li>
+                    </ul>
+                  <li class="nav-item">
+                    <form action="/read-fuses" method="post">
+                        <input type="hidden" id="selectedMCU" name="selectedMCU" value="{{ selected_mcu }}">
+                        <button id="read-fuses" type="submit" class="btn btn-primary disabled"><i class="bi bi-eye"></i>&nbsp;fuses</button>
+                    </form>
+                  </li>
+                  <li class="nav-item">
+                    <form action="/read-flash" method="post">
+                        <input type="hidden" id="selectedMCU" name="selectedMCU" value="{{ selected_mcu }}">
+                        <button id="read-flash" type="submit" class="btn btn-secondary disabled"><i class="bi bi-download"></i>&nbsp;flash</button>
+                    </form>
+                  </li>
+                  <li class="nav-item">
+                    <form action="/flash" method="post">
+                      <input type="hidden" id="selectedMCU" name="selectedMCU" value="{{ selected_mcu }}">
+                      <button type="submit" class="btn btn-danger {% if not hex_file %}disabled{% endif %}"><i class="bi bi-upload"></i>&nbsp;flash</button>
+                    </form>
+                  </li>
+                  <li class="nav-item">
+                    <form action="/download">
+                      <button type="submit" class="btn btn-primary"><i class="bi bi-file-earmark-code"></i></button>
+                    </form>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+          {% if action == 'shutdown' %}
+            <div class="alert alert-danger" role="alert">
+                Goobye!
+                <pre><i class="bi bi-door-closed-fill"></i>&nbsp;Shuting down now!</pre>
+            </div>
+          {% endif %}
+
+          {% if action == 'burn-fuse' or action == 'flash' %}
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <pre>{{ error }}</pre>
+            </div>
+            {% endif %}
+            {% if output %}
+            <div class="alert alert-info" role="alert">
+                <pre>{{ output }}</pre>
+            </div>
+            {% endif %}
+          {% endif %}
+
+          {% if action == 'download' %}
+          <div class="alert alert-info" role="alert">
+            <pre>{{ instructions }}</pre>
+          </div>
+          {% endif %}
+          {% if action == 'read-fuses' %}
+            {% if low_fuse %}
+              <div class="alert alert-info" role="alert">
+                <div class="d-flex align-items-center">
+                  {% if target_low_fuse|length > 0 and target_low_fuse is not none and target_low_fuse != low_fuse %}
+                    <form action="/burn-low-fuse" method="post">
+                      <button type="submit" class="btn btn-danger mr-2 ml-2"><i class="bi bi-save"></i></button>
+                    </form>
+                  {% endif %}
+                  &nbsp;
+                  <p class="mb-0">Low fuse is set to {{ low_fuse }} ({{ target_low_fuse}}).</p>
+                </div>
+              </div>
+            {% endif %}
+            {% if high_fuse %}
+              <div class="alert alert-info" role="alert">
+                  High fuse is set to {{ high_fuse }} ({{ target_high_fuse }}).
+              </div>
+            {% endif %}
+            {% if ext_fuse %}
+              <div class="alert alert-info" role="alert">
+                  Extended fuse is set to {{ ext_fuse }} ({{ target_ext_fuse }}).
+              </div>
+            {% endif %}
+            {% if error %}
+              <div class="alert alert-danger" role="alert">
+                  <pre>{{ error }}</pre>
+              </div>
+            {% endif %}
+          {% endif %}
+
+        </main>
+
+        <footer class="footer mt-auto py-3 bg-light">
+          <div class="container text-center">
+            <img src="{{ url_for('static', filename=logo) }}" class="mx-auto d-block" style="width: 46px; height: 22px;">
+          </div>
+        </footer>
+
+        <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+// Get all dropdown items
+var dropdownItems = document.querySelectorAll('.dropdown-item');
+document.getElementById('selectedMCU').value = dropdownItems[0].textContent;
+
+// if dropdown menu is not set to 'Select MCU' enable button read-fuses
+if (document.getElementById('selectedMCU').value != 'Select MCU') {
+    // remove 'disabled' class from button read-fuses
+    document.getElementById('read-fuses').classList.remove('disabled');
+    document.getElementById('read-flash').classList.remove('disabled');
+}
+
+if (dropdownItems[0].textContent == 'Select MCU') {
+    // set 'disabled' class from button read-fuses
+    document.getElementById('read-fuses').classList.add('disabled');
+}
+
+// Add click event listener to each item
+dropdownItems.forEach(function(item) {
+  item.addEventListener('click', function(e) {
+    // Prevent default action
+    e.preventDefault();
+    
+    // Get the button
+    var button = document.querySelector('#dropdownMenuButton');
+    
+    // Update the button text with the selected item's text
+    button.textContent = this.textContent;
+
+    var selectedOption = event.target.textContent;
+
+    // remove 'disabled' class from button read-fuses
+    document.getElementById('read-fuses').classList.remove('disabled');
+
+    document.getElementById('selectedMCU').value = selectedOption;
+
+    // Send a POST request to the server to update the selectedMCU variable
+    fetch('/update-selected-mcu', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        selectedMCU: selectedOption,
+      }),
+    });
+
+  });
+});
+    </script>
+</body>
+</html>
