@@ -22,5 +22,8 @@ memory/
 # Scratch files for agents and debugging
 tmp/
 
+# Maintenance cycle reports — kept local, see maintenance-plan.md
+audit/
+
 # Devcontainer plugin bake — private toolbox copy, local builds only
 .devcontainer/toolbox/

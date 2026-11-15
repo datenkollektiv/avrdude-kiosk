@@ -30,6 +30,7 @@ timeline
               : Migrate from venv + requirements.txt to uv (done)
               : pytest coverage for routes with avrdude mocked (after uv migration)
               : just qa gate (ruff + mypy) and doctor recipe
+              : Minimal CI workflow - uv sync --locked, just check, just audit (after just qa gate)
 
     Mid term  : Run avrdude asynchronously with progress feedback
 

@@ -26,6 +26,17 @@ lock:
 add +args:
     uv add "$@"
 
+# Scan the locked runtime dependencies for known vulnerabilities (pip-audit, needs network)
+audit:
+    mkdir -p tmp
+    uv export --locked --no-dev --no-hashes --no-emit-project --format requirements-txt -o tmp/audit-requirements.txt
+    uvx pip-audit@2.10.1 --no-deps --disable-pip -r tmp/audit-requirements.txt
+
+# Report ruff and mypy findings (informational until the qa gate lands)
+lint:
+    -uv run --locked ruff check app.py config.example.py
+    -uv run --locked mypy
+
 # Read the fuses of the connected MCU to stdout
 fuses part="m328p" programmer="usbasp":
     avrdude -c {{programmer}} -p {{part}} -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h

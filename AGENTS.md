@@ -24,6 +24,7 @@ It runs as a kiosk on a Raspberry Pi with the programmer attached.
 - `just install` — runs `uv sync --locked` to sync `.venv` from `pyproject.toml` + `uv.lock`; `.python-version` pins 3.13.
 - `just lock` — `uv lock` + `uv sync --locked` after editing `pyproject.toml`.
 - `just add <pkg>` — `uv add <pkg>`; updates `pyproject.toml` and `uv.lock`.
+- `just audit` / `just lint` — pip-audit of the runtime deps; ruff + mypy report (informational). See `maintenance-plan.md`.
 
 ## Key Conventions
 
