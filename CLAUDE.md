@@ -22,7 +22,7 @@ All project agents (in `.claude/agents/`) are also available globally via the
 Task tool with `subagent_type` matching the agent name.
 
 - **python-pro** (project): Delegate writing or changing Python in `app.py` and any new modules.
-- **dependency-manager** (project): Delegate adding, removing or upgrading dependencies and the move off `requirements.txt` onto uv.
+- **dependency-manager** (project): Delegate adding, removing or upgrading dependencies in `pyproject.toml` and refreshing `uv.lock` (via `just add` / `just lock`, never by hand).
 - **test-automator** (project): Delegate writing pytest tests and wiring them into the justfile.
 - **code-reviewer** (project): Delegate a correctness review of changed Python, templates or JSON instruction files.
 - **justfile-reviewer** (project): Delegate a review of the `justfile` after adding or changing recipes.
@@ -104,11 +104,13 @@ Project-local tmp keeps artifacts discoverable and scoped to the project.
 Name temp files to indicate their purpose — `tmp/fuses-m328p-before.txt` not `tmp/test.txt`.
 
 **Use `just` recipes for all run, check and avrdude calls**
-Never invoke `python3` or `avrdude` directly. Use the reusable recipes:
+Never invoke `python3`, `uv run python` or `avrdude` directly. Use the reusable recipes:
 - `just run` — start the web UI on http://localhost:5001
 - `just check` — byte-compile the Python sources
 - `just fuses <part> <programmer>` — read the fuses of the connected MCU
-- `just install` — install pinned dependencies into the active venv
+- `just install` — sync the locked environment (`uv sync --locked`)
+- `just lock` — re-resolve `uv.lock` after editing `pyproject.toml`, then sync
+- `just add <pkg>` — add a dependency (`uv add`; `--dev` for dev tooling)
 If a needed recipe doesn't exist, add it first — that's part of the task.
 
 **Surgical changes only**
@@ -128,6 +130,13 @@ Before closing any debugging or resolution task, ask:
 If yes: use `/project-lore` to log the finding in `docs/project-lore.md`.
 High-value failure patterns that surface repeatedly also belong in a
 `## Common Resolution Failures` table (add one if it does not exist yet).
+
+## Common Resolution Failures
+
+| Symptom | Likely cause |
+|:--------|:-------------|
+| Direct `uv …` call denied with "use just <recipe>" | `just-enforcer.sh` matches recipe first words; use `just add` / `just lock` |
+| `just add -- --dev <pkg>` fails inside `uv add` | just forwards `--` literally; use `just add --dev <pkg>` |
 
 ## Project Memory
 

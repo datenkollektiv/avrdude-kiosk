@@ -27,9 +27,10 @@ timeline
 
     Near term : Parse instructions.json with json instead of eval
               : Configurable avrdude bit clock (-B 125kHz for cheap USBasp)
-              : Migrate from venv + requirements.txt to uv
+              : Migrate from venv + requirements.txt to uv (done)
+              : pytest coverage for routes with avrdude mocked (after uv migration)
+              : just qa gate (ruff + mypy) and doctor recipe
 
-    Mid term  : pytest coverage for routes with avrdude mocked (after uv migration)
-              : Run avrdude asynchronously with progress feedback
+    Mid term  : Run avrdude asynchronously with progress feedback
 
     Long term : Drop root for avrdude via udev rules for the USBasp

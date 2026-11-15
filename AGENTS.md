@@ -21,7 +21,9 @@ It runs as a kiosk on a Raspberry Pi with the programmer attached.
 - `just run` — start the UI on http://localhost:5001.
 - `just check` — byte-compile the Python sources; there are no tests yet.
 - `just fuses m328p usbasp` — read fuses of the connected MCU.
-- `just install` / `just freeze` — install or freeze `requirements.txt` in the repo-root venv (`.envrc` sources `bin/activate`).
+- `just install` — runs `uv sync --locked` to sync `.venv` from `pyproject.toml` + `uv.lock`; `.python-version` pins 3.13.
+- `just lock` — `uv lock` + `uv sync --locked` after editing `pyproject.toml`.
+- `just add <pkg>` — `uv add <pkg>`; updates `pyproject.toml` and `uv.lock`.
 
 ## Key Conventions
 

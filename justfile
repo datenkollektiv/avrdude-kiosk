@@ -1,22 +1,30 @@
+python := "uv run --locked python"
+
 # List available recipes
 default:
     @just --list
 
-# Install pinned dependencies into the active venv
+# Sync the locked environment into .venv with uv (run and check also sync .venv, but fail if uv.lock is stale)
 install:
-    pip install -r requirements.txt
-
-# Freeze the current venv into requirements.txt
-freeze:
-    pip freeze > requirements.txt
+    uv sync --locked
 
 # Run the AVR Burner web UI on http://localhost:5001
 run:
-    python3 app.py
+    {{python}} app.py
 
 # Byte-compile the Python sources to catch syntax errors
 check:
-    python3 -m py_compile app.py config.example.py
+    {{python}} -m py_compile app.py config.example.py
+
+# Re-resolve uv.lock after editing pyproject.toml, then sync
+lock:
+    uv lock
+    uv sync --locked
+
+# Add a runtime dependency (use `just add --dev <pkg>` for dev tooling); updates pyproject.toml and uv.lock
+[positional-arguments]
+add +args:
+    uv add "$@"
 
 # Read the fuses of the connected MCU to stdout
 fuses part="m328p" programmer="usbasp":
