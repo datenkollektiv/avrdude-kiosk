@@ -1,0 +1,3 @@
+# Base egress for every agent sandbox. One domain per line, # comments allowed, lowercase.
+# GitHub (github.com, api.github.com, git over https) comes from https://api.github.com/meta inside init-firewall.sh.
+registry.npmjs.org    # npm installs and npx MCP servers; agent self-updates are disabled separately

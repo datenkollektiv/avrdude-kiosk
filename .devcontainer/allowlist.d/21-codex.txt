@@ -1,0 +1,6 @@
+# Codex CLI (removed from the image when AGENTS lacks "codex")
+api.openai.com     # API-key inference (/v1)
+chatgpt.com        # ChatGPT-subscription backend (/backend-api)
+auth.openai.com    # OAuth token refresh for ChatGPT logins (/oauth/token)
+# Not listed: ab.chatgpt.com (Statsig telemetry; [analytics] enabled=false in codex-config.toml),
+# releases.openai.com (standalone updater; check_for_update_on_startup=false).

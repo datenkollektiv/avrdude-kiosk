@@ -1,0 +1,71 @@
+{
+  "name": "Agent Sandbox",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".",
+    "args": {
+      "TZ": "${localEnv:TZ:Europe/Berlin}",
+      "AGENTS": "claude"
+    }
+  },
+  "capAdd": [
+    "NET_ADMIN",
+    "NET_RAW"
+  ],
+  "init": true,
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {}
+  },
+  "remoteUser": "node",
+  "updateRemoteUserUID": true,
+  "mounts": [
+    "source=claude-code-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+    "source=claude-code-config-${devcontainerId},target=/home/node/.claude,type=volume",
+    "source=codex-config-${devcontainerId},target=/home/node/.codex,type=volume",
+    "source=gemini-config-${devcontainerId},target=/home/node/.gemini,type=volume",
+    "source=opencode-data-${devcontainerId},target=/home/node/.local/share/opencode,type=volume",
+    "source=${localEnv:HOME}/sandbox-exchange,target=/exchange,type=bind"
+  ],
+  "containerEnv": {
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+    "CODEX_HOME": "/home/node/.codex",
+    "DISABLE_AUTOUPDATER": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "DISABLE_TELEMETRY": "1",
+    "DISABLE_ERROR_REPORTING": "1",
+    "DISABLE_BUG_COMMAND": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_PLUGIN_PREFER_HTTPS": "1",
+    "GEMINI_SANDBOX": "false",
+    "GEMINI_CLI_NO_RELAUNCH": "1",
+    "OPENCODE_DISABLE_AUTOUPDATE": "1",
+    "NPM_CONFIG_IGNORE_SCRIPTS": "true",
+    "NPM_CONFIG_UPDATE_NOTIFIER": "false",
+    "NPM_CONFIG_FUND": "false"
+  },
+  "remoteEnv": {
+    "CLAUDE_CODE_OAUTH_TOKEN": "${localEnv:CLAUDE_CODE_OAUTH_TOKEN:}",
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY:}",
+    "OPENAI_API_KEY": "${localEnv:OPENAI_API_KEY:}",
+    "GEMINI_API_KEY": "${localEnv:GEMINI_API_KEY:}"
+  },
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+  "workspaceFolder": "/workspace",
+  "postStartCommand": "sudo /usr/local/bin/init-firewall.sh && install-plugins.sh",
+  "waitFor": "postStartCommand",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# VS Code Remote-Containers (reference list)
+marketplace.visualstudio.com
+vscode.blob.core.windows.net
+update.code.visualstudio.com

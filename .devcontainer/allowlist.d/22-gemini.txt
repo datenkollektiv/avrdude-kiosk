@@ -1,0 +1,7 @@
+# Gemini CLI (removed from the image when AGENTS lacks "gemini")
+generativelanguage.googleapis.com   # GEMINI_API_KEY inference
+cloudcode-pa.googleapis.com         # inference for a Google-account login copied into ~/.gemini/oauth_creds.json
+oauth2.googleapis.com               # token refresh for that login
+# Not listed: accounts.google.com / codeassist.google.com (browser consent cannot run in the container),
+# play.googleapis.com (Clearcut usage stats; privacy.usageStatisticsEnabled=false in gemini-settings.json),
+# us-docker.pkg.dev / ghcr.io (Gemini's own docker sandbox; GEMINI_SANDBOX=false).

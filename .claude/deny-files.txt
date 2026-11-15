@@ -1,0 +1,23 @@
+# deny-files.txt — secret files Claude must never read or write.
+#
+# Consumed by the block-secret-reads.sh PreToolUse hook (blocks Bash access)
+# and, at /onboard time, expanded into `permissions.deny` Read rules in
+# settings.json (blocks the Read tool). This file is the single source of truth
+# for both layers — edit it here and re-run /onboard to regenerate the Read rules.
+#
+# Format: one gitignore-style glob per line. `#` starts a comment; blank lines
+# are ignored. Matching is path-boundary anchored, so `.env` blocks `.env`,
+# `./.env`, `> .env` but NOT `.envrc` or the word `environment`.
+#   *   = one path segment (no slash, no whitespace)
+#   **  = anything, crosses slashes (e.g. secrets/**)
+
+.env
+.env.*
+*.pem
+*.key
+secrets/**
+
+# Add project-specific secret files below, for example:
+# credentials.json
+# *.p12
+# config/production-secrets.yaml
