@@ -1,0 +1,6 @@
+# Claude Code (removed from the image when AGENTS lacks "claude")
+api.anthropic.com      # inference, WebFetch safety check
+platform.claude.com    # OAuth token exchange/refresh for claude.ai accounts (TODO(verify): needed for a setup-token session?)
+# Not listed: claude.ai (browser login does not work in the container; run `claude setup-token` on the host),
+# sentry.io / statsig.com / *.datadoghq.com (DISABLE_TELEMETRY, DISABLE_ERROR_REPORTING, CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC),
+# downloads.claude.ai (DISABLE_AUTOUPDATER=1; the npm pin is the version).

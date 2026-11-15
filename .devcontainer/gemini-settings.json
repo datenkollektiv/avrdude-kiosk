@@ -1,0 +1,7 @@
+{
+  "general": { "enableAutoUpdate": false, "enableAutoUpdateNotification": false },
+  "privacy": { "usageStatisticsEnabled": false },
+  "telemetry": { "enabled": false },
+  "tools": { "sandbox": false },
+  "security": { "auth": { "selectedType": "gemini-api-key" } }
+}

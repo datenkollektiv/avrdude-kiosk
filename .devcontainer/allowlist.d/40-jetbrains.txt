@@ -1,0 +1,10 @@
+# JetBrains Dev Containers backend. The backend itself is copied in from jb_devcontainers_shared_volume by
+# the host IDE; these hosts cover in-container plugin installs and update checks.
+# Source: Remote Development troubleshooting page; plugins.jetbrains.com is inferred from customizations.jetbrains.plugins.
+download.jetbrains.com
+download-cf.jetbrains.com
+download-cdn.jetbrains.com
+cache-redirector.jetbrains.com
+data.services.jetbrains.com
+plugins.jetbrains.com
+code-with-me.jetbrains.com

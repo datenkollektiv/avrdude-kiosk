@@ -1,0 +1,5 @@
+# Toolchain registries for this project. Filled by /onboard Phase 5e; edit by hand and rebuild to change.
+# python: pypi.org files.pythonhosted.org | rust: index.crates.io static.crates.io static.rust-lang.org
+# java: repo.maven.apache.org plugins.gradle.org services.gradle.org | go: proxy.golang.org sum.golang.org
+pypi.org
+files.pythonhosted.org

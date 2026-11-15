@@ -1,0 +1,1 @@
+# Project-specific hosts (https git remotes, private plugin marketplaces). SSH remotes need no entry: tcp/22 egress is open.

@@ -1,0 +1,14 @@
+# Seeded into ~/.codex/config.toml on first container start; edit the copy in the volume afterwards.
+# The container is the sandbox: Codex's bubblewrap stage needs unprivileged user namespaces, fails with
+# SandboxErr::Denied here, and never falls back to Landlock (use_legacy_landlock is deprecated).
+sandbox_mode = "danger-full-access"
+approval_policy = "on-request"       # `just yolo-codex` passes --dangerously-bypass-approvals-and-sandbox instead
+check_for_update_on_startup = false  # DISABLE_AUTOUPDATER equivalent; the npm pin is the version
+
+[analytics]
+enabled = false                      # Statsig exporter -> ab.chatgpt.com is also not allowlisted
+
+[otel]
+exporter = "none"
+trace_exporter = "none"
+metrics_exporter = "none"

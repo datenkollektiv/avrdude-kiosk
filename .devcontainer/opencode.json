@@ -1,0 +1,10 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permissions": [
+    { "action": "read", "resource": "**/.env",       "effect": "deny" },
+    { "action": "read", "resource": "**/.env.*",     "effect": "deny" },
+    { "action": "read", "resource": "**/*.pem",      "effect": "deny" },
+    { "action": "read", "resource": "**/*.key",      "effect": "deny" },
+    { "action": "read", "resource": "**/secrets/**", "effect": "deny" }
+  ]
+}

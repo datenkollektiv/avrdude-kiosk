@@ -1,0 +1,7 @@
+# OpenCode (removed from the image when AGENTS lacks "opencode")
+models.opencode.ai                  # model catalog (runtime default source)
+api.anthropic.com                   # provider: ANTHROPIC_API_KEY
+api.openai.com                      # provider: OPENAI_API_KEY
+generativelanguage.googleapis.com   # provider: GEMINI_API_KEY
+# Not listed: opencode.ai (updater, Zen inference, session share = upload channel), models.dev (legacy catalog),
+# auth.openai.com (ChatGPT login via /connect; add to 60-project.txt if you use it).

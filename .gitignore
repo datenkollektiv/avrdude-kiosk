@@ -10,3 +10,19 @@ config.py
 # Ignore flash and eeprom files
 *.hex
 *.eep
+
+# Toolbox onboarding staging area
+review-queue/
+
+# Claude Code — per-machine permissions and hooks
+.claude/settings.local.json
+.claude/logs/
+
+# Project memory — kept private because this repository is public
+memory/
+
+# Scratch files for agents and debugging
+tmp/
+
+# Devcontainer plugin bake — private toolbox copy, local builds only
+.devcontainer/toolbox/
