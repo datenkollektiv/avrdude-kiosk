@@ -1,7 +1,5 @@
-# Ignore Python virtual environment
-bin/
-lib/
-pyvenv.cfg
+# Ignore uv virtual environment and Python bytecode caches
+.venv/
 __pycache__/
 
 # Ignore local configuration

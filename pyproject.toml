@@ -1,0 +1,42 @@
+[project]
+name = "avrdude-kiosk"
+version = "0.1.0"
+description = "Flask kiosk UI that reads fuses and flashes ATmega MCUs via avrdude and a USBasp"
+readme = "README.md"
+# Upper-bounded on purpose: a bare ">=3.13" makes uv.lock resolve for every later
+# minor line and leaves the .python-version pin unguarded. The patch digit is
+# left to .python-version.
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "flask>=3.0",
+]
+
+[tool.uv]
+# Application, not a library: nothing to build or install, only dependencies to sync.
+package = false
+# Range, not a pin: raises the floor for resolver behaviour, and the upper bound
+# forces a deliberate look at the release notes when uv reaches 1.0.
+required-version = ">=0.12,<1"
+
+[dependency-groups]
+# Floors at the minor; uv.lock pins the exact versions.
+# pytest joins with the "pytest coverage for routes" roadmap item.
+dev = [
+    "mypy>=2.4",
+    "pre-commit>=4.7",
+    "ruff>=0.17",
+]
+
+[tool.ruff]
+# House baseline; also governs `ruff format`.
+line-length = 100
+
+[tool.ruff.lint]
+# House baseline rule set.
+select = ["E", "W", "F", "B", "I", "SIM", "UP", "RUF"]
+# Ambiguous-unicode checks in docstrings and comments are noise for typographic text.
+ignore = ["RUF002", "RUF003"]
+
+[tool.mypy]
+# Every tracked first-party Python file.
+files = ["app.py", "config.example.py"]

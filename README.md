@@ -4,7 +4,7 @@ DALL-E: "please create a black and white sketch of a chip labeld Atmega368 with 
 
 ![avr-burner](./static/images/burning-atmega.webp)
 
-TL;DR: `python3 app.py` - open [`http://localhost:5001`](http://localhost:5001) in your browser.
+TL;DR: `just run` (or `uv run --locked python app.py` without just) - open [`http://localhost:5001`](http://localhost:5001) in your browser.
 
 The "AVR Burner" can be used to:
 
@@ -15,14 +15,32 @@ Under the hood we use `avrdude` and a `usbasp` programmer.
 
 Pre-requisites:
 
-* `avrdude` installed, and
+* `avrdude` installed,
+* `just` and `uv` installed (see Setup), and
 * `usbasp` programmer connected to the ATmega328P and the host (Raspberry Pi).
 
 ## Setup
 
 ```shell
-sudo apt-get install avrdude -y
+sudo apt-get install avrdude just -y
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync --locked --no-dev
 ```
+
+`--no-dev` installs only the runtime dependencies on the kiosk; for local development, `just install` also syncs the dev tools (ruff, mypy, pre-commit).
+
+A kiosk autostart that runs `start.sh` needs `uv` on its `PATH` (the installer puts it in `~/.local/bin`). `pyproject.toml` requires uv `>=0.12,<1` (`[tool.uv] required-version`); update uv with `uv self update`.
+
+### Upgrading from the old venv setup
+
+Older checkouts used a venv in the repo root (`python3 -m venv .`, loaded via direnv). After `git pull`, remove the leftovers and sync:
+
+```shell
+rm -rf bin lib lib64 include share pyvenv.cfg
+uv sync --locked --no-dev
+```
+
+Also run `direnv deny` (or remove the allow for the deleted `.envrc`) if you used direnv.
 
 ## (manually) Check the Fuses
 
