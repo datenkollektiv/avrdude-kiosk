@@ -30,7 +30,7 @@ It runs as a kiosk on a Raspberry Pi with the programmer attached.
 
 - MCU display names map to avrdude part ids in `map_mcu_full_name_to_AVR_part`; add new parts there.
 - `.hex`/`.eep` files and `config.py` are gitignored — never commit firmware images or local config.
-- Cheap USBasp clones need `-B 125kHz`, which `app.py` does not pass yet (see README Known Issues).
+- Cheap USBasp clones need `-B 125kHz`, which `app.py` does not pass yet (see `docs/features/configurable-bitclock-v1.md`).
 
 ## Coding Principles
 

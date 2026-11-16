@@ -60,6 +60,4 @@ avrdude -c usbasp -p m328p -U lfuse:r:low_fuse.hex:h -U hfuse:r:high_fuse.hex:h 
 
 ## Known Issues
 
-* [ ] (copilot) The `avrdude` command is executed as `root` (via `sudo`), which is not ideal.
-* [ ] (copilot) The `avrdude` command is executed synchronously, which is not ideal.
-* [ ] The `avrdude` command is executed with a fixed set of parameters, which is not ideal (`-B 125kHz` required, for "cheap" USBasp devices).
+Tracked in [`docs/ROADMAP.md`](docs/ROADMAP.md) with design notes in [`docs/features/`](docs/features/).
